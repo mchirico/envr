@@ -1,11 +1,11 @@
 /*
 Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
 	"fmt"
+	"github.com/mchirico/envr/fixtures"
 
 	"github.com/spf13/cobra"
 )
@@ -21,7 +21,12 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("argo called")
+		r, err := fixtures.Read("../fixtures/argo/argoUbunto.yaml")
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Println(string(r))
 	},
 }
 

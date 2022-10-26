@@ -1,6 +1,7 @@
 package fixtures
 
 import (
+	"os"
 	"path/filepath"
 	"runtime"
 )
@@ -22,4 +23,8 @@ func Path(rel string) string {
 	}
 
 	return filepath.Join(basepath, rel)
+}
+
+func Read(rel string) ([]byte, error) {
+	return os.ReadFile(Path(rel))
 }
