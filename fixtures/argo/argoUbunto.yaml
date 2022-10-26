@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: dev-check
+  labels:
+    workflows.argoproj.io/archive-strategy: "false"
+  annotations:
+    workflows.argoproj.io/description: |
+      Use the following command to get into the Pod
+      kubectl exec --stdin --tty shell-demo -- /bin/bash
+
+spec:
+  entrypoint: dev
+  arguments:
+    parameters:
+    - name: AWS_ACCESS_KEY_ID
+      value: ${AWS_ACCESS_KEY_ID}
+    - name: AWS_SECRET_ACCESS_KEY
+      value: ${AWS_SECRET_ACCESS_KEY}
+    - name: AWS_SESSION_TOKEN
+      value: ${AWS_SESSION_TOKEN}
+    - name: AWS_DEFAULT_REGION
+      value: ${AWS_DEFAULT_REGION}      
+   
+  templates:
+  - name: dev
+    script:
+      image: mchirico/ubuntu:latest
+      command: [bash]
+      source: |
+        sleep 3000
+      env:
+        - name: AWS_ACCESS_KEY_ID
+          value: "{{workflow.parameters.AWS_ACCESS_KEY_ID}}"
+        - name: AWS_SECRET_ACCESS_KEY
+          value: "{{workflow.parameters.AWS_SECRET_ACCESS_KEY}}"
+        - name: AWS_SESSION_TOKEN
+          value: "{{workflow.parameters.AWS_SESSION_TOKEN}}"
+        - name: AWS_DEFAULT_REGION
+          value: "{{workflow.parameters.AWS_DEFAULT_REGION}}"	  
