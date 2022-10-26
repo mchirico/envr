@@ -5,7 +5,6 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/mchirico/envr/util"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -25,18 +24,13 @@ to quickly create a Cobra application.`,
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if len(args) == 0 {
-			fmt.Println("No arguments")
-			fmt.Println("envr ./filename.yaml")
-			return
-		}
-		out, err := util.GetAWS()
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		s, err := util.ReadReplace(args[0], out)
-		fmt.Print(s)
+		fmt.Printf(`
+ envr swap ./file.yaml
+ envr info
+ envr argo	
+ envr version
+
+`)
 
 	},
 }
