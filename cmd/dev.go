@@ -13,13 +13,18 @@ import (
 // devCmd represents the dev command
 var devCmd = &cobra.Command{
 	Use:   "dev",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "argo dev template",
+	Long: `
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+Can ssh into the argo pod for dev and testing.
+This pulls from:
+
+   mchirico/ubuntu:latest
+
+
+kubectl exec --stdin --tty argopod -- /bin/bash
+
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		r, err := fixtures.Read("../fixtures/argo/argoUbunto.yaml")
 		if err != nil {
