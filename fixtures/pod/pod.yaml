@@ -5,6 +5,7 @@ metadata:
   labels:
     purpose: demonstrate-envars
 spec:
+#  nodeName: ip-10-0-1-130.us-east-2.compute.internal
   containers:
   - name: envar-demo-container
     image: mchirico/ubuntu:latest
@@ -19,3 +20,5 @@ spec:
       value: ${AWS_SESSION_TOKEN}
     - name: AWS_DEFAULT_REGION
       value: ${AWS_DEFAULT_REGION}
+#  imagePullSecrets:
+#    - name: regcred

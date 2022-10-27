@@ -18,6 +18,7 @@ var infoCmd = &cobra.Command{
 		fmt.Println(`
 kubectl exec --stdin --tty shell-demo -- /bin/bash
 
+
 k logs envar-demo --follow
 
 k run --rm -i --tty dev --image=mchirico/ubuntu:latest --restart=Never --pod-running-timeout=6m0s -- bash -il
@@ -34,6 +35,28 @@ argo --kubeconfig ~/.kube/config -n argo submit --serviceaccount cicd \
 SECRET=$(kubectl get sa cicd -o=jsonpath='{.secrets[0].name}')
 ARGO_TOKEN="Bearer $(kubectl get secret $SECRET -o=jsonpath='{.data.token}' | base64 --decode)"
 echo $ARGO_TOKEN
+
+
+aws ecr describe-repositories
+
+ref: https://jmespath.org/tutorial.html
+
+aws ecr describe-repositories \
+--query 'repositories[*].[repositoryUri,repositoryName]'
+
+
+aws ecr describe-repositories \
+--query 'repositories[?repositoryName=='\''repodev'\''].[repositoryUri,repositoryName]'
+
+
+kubectl create secret docker-registry regcred \
+  --docker-server=<aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com \
+  --docker-username=AWS \
+  --docker-password=$(aws ecr get-login-password) \
+  -o yaml
+
+
+
 
 `)
 	},
