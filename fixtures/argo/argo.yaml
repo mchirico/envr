@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: sharept-test
+  labels:
+    workflows.argoproj.io/archive-strategy: "false"
+  annotations:
+    workflows.argoproj.io/description: |
+      This is a simple sharept example
+spec:
+  entrypoint: sharept
+  arguments:
+    parameters:
+    - name: AWS_ACCESS_KEY_ID
+      value: ${AWS_ACCESS_KEY_ID}
+    - name: AWS_SECRET_ACCESS_KEY
+      value: ${AWS_SECRET_ACCESS_KEY}
+    - name: AWS_SESSION_TOKEN
+      value: ${AWS_SESSION_TOKEN}
+    - name: AWS_DEFAULT_REGION
+      value: ${AWS_DEFAULT_REGION}      
+
+
+
+  templates:
+  - name: sharept
+    script:  
+      image: 11111111.dkr.ecr.us-east-2.amazonaws.com/img:2022-10-26_18-08-49.121_DST
+      env:
+        - name: AWS_ACCESS_KEY_ID
+          value: "{{workflow.parameters.AWS_ACCESS_KEY_ID}}"
+        - name: AWS_SECRET_ACCESS_KEY
+          value: "{{workflow.parameters.AWS_SECRET_ACCESS_KEY}}"
+        - name: AWS_SESSION_TOKEN
+          value: "{{workflow.parameters.AWS_SESSION_TOKEN}}"
+        - name: AWS_DEFAULT_REGION
+          value: "{{workflow.parameters.AWS_DEFAULT_REGION}}"	  
+
+
+
