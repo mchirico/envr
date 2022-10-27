@@ -18,6 +18,11 @@ var infoCmd = &cobra.Command{
 		fmt.Println(`
 kubectl exec --stdin --tty shell-demo -- /bin/bash
 
+k logs envar-demo --follow
+
+k run --rm -i --tty dev --image=mchirico/ubuntu:latest --restart=Never --pod-running-timeout=6m0s -- bash -il
+
+
 kubectl cp file argo/pod:/root/file
 
 argo --kubeconfig ~/.kube/config -n argo submit --serviceaccount cicd \
