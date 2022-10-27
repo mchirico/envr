@@ -28,3 +28,7 @@ func Path(rel string) string {
 func Read(rel string) ([]byte, error) {
 	return os.ReadFile(Path(rel))
 }
+
+func Write(rel string, data []byte) error {
+	return os.WriteFile(Path(rel), data, 0644)
+}

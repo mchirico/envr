@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: envar-demo
+  labels:
+    purpose: demonstrate-envars
+spec:
+  containers:
+  - name: envar-demo-container
+    image: mchirico/ubuntu:latest
+    command: ["/bin/bash","-c","--"]
+    args: ["sleep 30000"]
+    env:
+    - name: AWS_ACCESS_KEY_ID
+      value: ${AWS_ACCESS_KEY_ID}
+    - name: AWS_SECRET_ACCESS_KEY
+      value: ${AWS_SECRET_ACCESS_KEY}
+    - name: AWS_SESSION_TOKEN
+      value: ${AWS_SESSION_TOKEN}
+    - name: AWS_DEFAULT_REGION
+      value: ${AWS_DEFAULT_REGION}
+
