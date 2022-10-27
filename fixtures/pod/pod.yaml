@@ -8,8 +8,8 @@ spec:
   containers:
   - name: envar-demo-container
     image: mchirico/ubuntu:latest
-    command: ["bash"]
-    args: ["sleep", "30000"]
+    command: ["/bin/bash","-c","--"]
+    args: ["sleep 30000"]
     env:
     - name: AWS_ACCESS_KEY_ID
       value: ${AWS_ACCESS_KEY_ID}
