@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"github.com/mchirico/envr/pb"
 	"os"
 	"strings"
 )
@@ -46,4 +47,38 @@ func ReadReplace(file string, out []string) (string, error) {
 	s = strings.Replace(s, "${AWS_DEFAULT_REGION}", fmt.Sprintf("%q", out[3]), -1)
 
 	return s, nil
+}
+
+func AWSFromPB() ([]string, error) {
+	out := []string{}
+	m := map[string]string{}
+	order := []string{"export AWS_ACCESS_KEY_ID",
+		"export AWS_SECRET_ACCESS_KEY", "export AWS_SESSION_TOKEN"}
+	for _, v := range order {
+		m[v] = ""
+	}
+
+	r, err := pb.Read()
+	if err != nil {
+		return nil, err
+	}
+	t := strings.Split(r, "\n")
+	for _, v := range t {
+		o := strings.Split(v, "=")
+		if len(o) != 2 {
+			return nil, fmt.Errorf("error: %s", v)
+		}
+		if _, ok := m[o[0]]; ok {
+			m[o[0]] = strings.Replace(o[1], "\"", "", -1)
+		}
+	}
+	for _, v := range order {
+		out = append(out, m[v])
+	}
+	if v, err := Get("AWS_DEFAULT_REGION"); err != nil {
+		out = append(out, "us-east-1")
+	} else {
+		out = append(out, v)
+	}
+	return out, nil
 }
