@@ -26,9 +26,14 @@ k run --rm -i --tty dev --image=mchirico/ubuntu:latest --restart=Never --pod-run
 
 kubectl cp file argo/pod:/root/file
 
-argo --kubeconfig ~/.kube/config -n argo submit --serviceaccount cicd \
+argo \
+--kubeconfig ~/.kube/config \
+-n argo submit \
+--serviceaccount cicd \
+--node-field-selector='name=ip-10-0-0-1.ec2.internal' \
  -p message="goodbye world" \
  --watch https://raw.githubusercontent.com/argoproj/argo-workflows/master/examples/global-parameters.yaml
+
 
 
 # This will generate the secret
