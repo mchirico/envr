@@ -5,7 +5,6 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/mchirico/envr/fixtures"
 	"github.com/mchirico/envr/kustomize"
 	"github.com/spf13/cobra"
 )
@@ -28,13 +27,18 @@ envr kustomize <directory-to-tmp>
 `)
 			return
 		}
-		dir := fixtures.Path(args[0])
-
+		dir := args[0]
 		path, err := kustomize.CreateKustomizeTmpDir(dir)
 		if err != nil {
 			return
 		}
-		err = kustomize.PopulateKustomizeTmpDir(path)
+		fmt.Println(`
+building kustomize setup in: ` + path + `\n`)
+
+		err = kustomize.PopulateKustomizeTmpDir(dir)
+		if err != nil {
+			fmt.Println(err)
+		}
 	},
 }
 
