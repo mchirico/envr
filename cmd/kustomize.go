@@ -33,7 +33,8 @@ envr kustomize <directory-to-tmp>
 			return
 		}
 		fmt.Println(`
-building kustomize setup in: ` + path + `\n`)
+building kustomize setup in: ` + path + `
+`)
 
 		err = kustomize.PopulateKustomizeTmpDir(dir)
 		if err != nil {

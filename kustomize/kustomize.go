@@ -32,8 +32,6 @@ func PopulateKustomizeTmpDir(dir string) error {
 }
 func populateKustomizeTmpDir(dir string, filefrom string) error {
 	file, err := fixtures.Read(filefrom)
-	fmt.Println("filefrom: ", filefrom)
-	fmt.Println("dir: ", dir)
 	if err != nil {
 		return err
 	}
@@ -44,7 +42,7 @@ func populateKustomizeTmpDir(dir string, filefrom string) error {
 	}
 
 	err = os.WriteFile(filepath.Join(dir+"/base", f[l-1]), file, 0644)
-	fmt.Println("file: ", filepath.Join(dir, f[l-1]))
+	fmt.Println("--> ", filepath.Join(dir+"/base", f[l-1]))
 	if err != nil {
 		return err
 	}
