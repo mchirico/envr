@@ -10,4 +10,8 @@ build:
   artifacts:
   - image: thing
     ko: {}
+#deploy:
+#  kubectl:
+#    manifests:
+#      - utils/k8s/pod.yaml
 
