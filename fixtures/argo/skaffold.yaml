@@ -1,17 +1,18 @@
 apiVersion: skaffold/v2beta26
 kind: Config
 metadata:
-  name: thing
+  name: echo
 build:
   tagPolicy:
     dateTime:
       format: "2006-01-02_15-04-05.999_DST"
       timezone: "Local"
   artifacts:
-  - image: thing
+  - image: 111111111111.dkr.ecr.us-east-2.amazonaws.com/echo
     ko: {}
-#deploy:
-#  kubectl:
-#    manifests:
-#      - utils/k8s/pod.yaml
+deploy:
+  kubectl:
+    manifests:
+    - podrunner.yaml
+
 
