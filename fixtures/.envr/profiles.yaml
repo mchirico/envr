@@ -1,0 +1,16 @@
+log:
+  filename: envr.log
+  maxSize: 10
+  maxBackups: 5
+  maxAge: 30
+profiles:
+  argo:
+    env:
+      TENENT:
+        value: "some value for tenent"
+        replace_string: "{{TENENT}}"
+        file: "argo.yaml"
+      TOKEN:
+        value: "value for token"
+        replace_string: "{{TOKEN}}"
+        file: "argo.yaml"
