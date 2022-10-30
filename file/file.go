@@ -46,6 +46,6 @@ func ReplaceFileIfExist(file string, data []byte) error {
 	return Write(file, data)
 }
 
-func ReplaceInString(s, old, new string) string {
+func StringReplaceAll(s, old, new string) string {
 	return strings.ReplaceAll(s, old, new)
 }
