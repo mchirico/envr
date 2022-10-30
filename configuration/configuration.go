@@ -79,21 +79,11 @@ func ProfileEnvExports(key string) ([]string, error) {
 func (p *Configure) exports(key string, opt ...string) ([]string, error) {
 	out := []string{}
 	for k, v := range config.GetMap(key) {
-		if len(opt) > 0 && opt[0] == "PS1" {
-			out = append(out, fmt.Sprintf("export %s='%s'\n", strings.ToUpper(k), v))
-		} else {
-			if val, ok := v.(string); ok && val == "unset" {
-				out = append(out, fmt.Sprintf("unset %s\n", strings.ToUpper(k)))
-				continue
-			}
-
-			if val, ok := v.(bool); ok {
-				out = append(out, fmt.Sprintf("export %s=%v\n", strings.ToUpper(k), val))
-				continue
-			}
-			out = append(out, fmt.Sprintf("export %s=%q\n", strings.ToUpper(k), v))
+		if val, ok := v.(bool); ok {
+			out = append(out, fmt.Sprintf("export %s=%v\n", strings.ToUpper(k), val))
+			continue
 		}
-
+		out = append(out, fmt.Sprintf("export %s=%q\n", strings.ToUpper(k), v))
 	}
 	if len(out) == 0 {
 		p.log("No exports found for key: " + key)

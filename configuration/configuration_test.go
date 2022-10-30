@@ -2,6 +2,7 @@ package configuration
 
 import (
 	"github.com/mchirico/envr/fixtures"
+	"strings"
 	"testing"
 )
 
@@ -14,14 +15,12 @@ func TestProfileEnvExports(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error getting exports: %s", err)
 	}
-	expected := []string{"export AWS_PROFILE=\"default\"\n",
-		"export AWS_REGION=\"us-east-1\"\n"}
+	expected := []string{"{{TENENT}}", "{{TOKEN}}"}
 
 	for _, v := range e {
-		// Make test poss for now... worry about it later
-		found := true
+		found := false
 		for _, vv := range expected {
-			if v == vv {
+			if strings.Contains(v, vv) {
 				found = true
 			}
 		}
