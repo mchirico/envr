@@ -1,8 +1,8 @@
 package configuration
 
 import (
+	"fmt"
 	"github.com/mchirico/envr/fixtures"
-	"strings"
 	"testing"
 )
 
@@ -15,23 +15,11 @@ func TestProfileEnvExports(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error getting exports: %s", err)
 	}
-	expected := []string{"{{TENENT}}", "{{TOKEN}}"}
-
-	for _, v := range e {
-		found := false
-		for _, vv := range expected {
-			if strings.Contains(v, vv) {
-				found = true
-			}
-		}
-		if !found {
-			t.Errorf("Unexpected export: %s", v)
-		}
+	if v, ok := e["key"]; !ok {
+		t.Errorf("Expected key, got %s", v)
 	}
+	fmt.Println(e)
 
-	for _, v := range e {
-		t.Logf("%s", v)
-	}
 }
 
 func Test_ListAllProfiles(t *testing.T) {

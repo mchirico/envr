@@ -7,10 +7,12 @@ profiles:
   argo:
     env:
       TENENT:
+        key: TENENT
         value: "some value for tenent"
         replace_string: "{{TENENT}}"
         file: "argo.yaml"
       TOKEN:
+        key: TOKEN
         value: "value for token"
         replace_string: "{{TOKEN}}"
         file: "argo.yaml"

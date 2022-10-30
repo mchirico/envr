@@ -1,13 +1,11 @@
 package configuration
 
 import (
-	"errors"
 	"fmt"
 	"github.com/mchirico/envr/config"
 	"github.com/mchirico/envr/logger"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
 var p *Configure
@@ -71,26 +69,23 @@ func profilesAvailable() []string {
 	return out
 }
 
-func ProfileEnvExports(key string) ([]string, error) {
+func ProfileEnvExports(key string) (map[string]string, error) {
 	p.log("ProfileEnvExports: profiles." + key + ".env")
 	return p.exports("profiles." + key + ".env")
 }
 
-func (p *Configure) exports(key string, opt ...string) ([]string, error) {
-	out := []string{}
-	for k, v := range config.GetMap(key) {
-		if val, ok := v.(bool); ok {
-			out = append(out, fmt.Sprintf("export %s=%v\n", strings.ToUpper(k), val))
-			continue
+func (p *Configure) exports(key string, opt ...string) (map[string]string, error) {
+
+	m := map[string]string{}
+	for _, v := range config.GetMap(key) {
+		for k, v := range v.(map[string]interface{}) {
+			m[k] = v.(string)
 		}
-		out = append(out, fmt.Sprintf("export %s=%q\n", strings.ToUpper(k), v))
+
 	}
-	if len(out) == 0 {
-		p.log("No exports found for key: " + key)
-		return nil, errors.New("no profile found for " + key)
-	}
-	p.log("exports output returned: " + key + " " + fmt.Sprintf("\n%v\n", out))
-	return out, nil
+
+	p.log("exports output returned: " + key + " " + fmt.Sprintf("\n%v\n", m))
+	return m, nil
 }
 
 func HomeDirectory() string {
