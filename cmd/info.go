@@ -61,7 +61,7 @@ kubectl create secret docker-registry regcred \
   -o yaml
 
 
-
+kubectl krew install resource-capacity
 
 `)
 	},
