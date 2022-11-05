@@ -18,6 +18,8 @@ var infoCmd = &cobra.Command{
 		fmt.Println(`
 kubectl exec --stdin --tty shell-demo -- /bin/bash
 
+kubectl config get-contexts -o name
+
 kubectl port-forward service/grafana 8080:80
 
 k logs envar-demo --follow
