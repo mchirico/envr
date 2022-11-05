@@ -65,6 +65,7 @@ kubectl create secret docker-registry regcred \
 
 
 kubectl krew install resource-capacity
+kubectl top node
 
 `)
 	},
