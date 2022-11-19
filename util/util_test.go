@@ -1,6 +1,8 @@
 package util
 
 import (
+	"fmt"
+	"github.com/mchirico/envr/fixtures"
 	"github.com/mchirico/envr/pb"
 	"testing"
 )
@@ -36,4 +38,10 @@ func TestAWSFromPB(t *testing.T) {
 		t.Error("Should be token")
 	}
 
+}
+
+func TestFindAll(t *testing.T) {
+	file := fixtures.Path("./findall/sampleFile.yaml")
+	r, _ := FindAll(file)
+	fmt.Println(r)
 }
