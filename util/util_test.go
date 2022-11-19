@@ -1,9 +1,9 @@
 package util
 
 import (
-	"fmt"
 	"github.com/mchirico/envr/fixtures"
 	"github.com/mchirico/envr/pb"
+	"os"
 	"testing"
 )
 
@@ -41,7 +41,17 @@ func TestAWSFromPB(t *testing.T) {
 }
 
 func TestFindAll(t *testing.T) {
+	os.Setenv("WITH2", "2")
 	file := fixtures.Path("./findall/sampleFile.yaml")
 	r, _ := FindAll(file)
-	fmt.Println(r)
+	e := NewEnv(r)
+
+	fileOut := fixtures.Path("./findall/sampleFileOut.yaml")
+	e.Replace(file, fileOut)
+
+	// Check for ${WITH2} replaced
+	r, _ = FindAll(fileOut)
+	if len(r) != 2 {
+		t.Error("Should be 2")
+	}
 }
