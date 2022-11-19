@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/mchirico/envr/pb"
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -81,4 +82,17 @@ func AWSFromPB() ([]string, error) {
 		out = append(out, v)
 	}
 	return out, nil
+}
+
+const ENVREGX = `{[A-Z_\-]+[0-9]*}`
+
+func FindAll(file string) ([]string, error) {
+	dat, err := os.ReadFile(file)
+	if err != nil {
+		return []string{}, err
+	}
+	re := regexp.MustCompile(ENVREGX)
+
+	return re.FindAllString(string(dat), -1), nil
+
 }
