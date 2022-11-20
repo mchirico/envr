@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/mchirico/envr/pb"
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -81,4 +82,71 @@ func AWSFromPB() ([]string, error) {
 		out = append(out, v)
 	}
 	return out, nil
+}
+
+const ENVREGX = `{[A-Z_\-]+[0-9]*}`
+
+func FindAll(file string) ([]string, error) {
+	dat, err := os.ReadFile(file)
+	if err != nil {
+		return []string{}, err
+	}
+	re := regexp.MustCompile(ENVREGX)
+
+	return re.FindAllString(string(dat), -1), nil
+}
+
+type Map struct {
+	Replacement  string
+	Count        int
+	ReplaceCount int
+}
+
+type Env struct {
+	m map[string]Map
+}
+
+func NewEnv(keys []string) *Env {
+	e := &Env{m: map[string]Map{}}
+	e.init(keys)
+	return e
+}
+
+func (e *Env) init(keys []string) {
+	e.m = make(map[string]Map)
+	for _, v := range keys {
+		if val, ok := e.m[v]; ok {
+			val.Count++
+			e.m[v] = val
+		} else {
+			if e.getEnv(v) == "" {
+				continue
+			}
+			e.m[v] = Map{Replacement: e.getEnv(v), Count: 1}
+		}
+	}
+}
+
+func (e *Env) getEnv(key string) string {
+	if len(key) >= 3 {
+		return os.Getenv(key[1 : len(key)-1])
+	}
+	return ""
+}
+
+func (e *Env) Replace(fileIn, fileOut string) error {
+	s, err := os.ReadFile(fileIn)
+	if err != nil {
+		return err
+	}
+	for k, v := range e.m {
+		if v.Count == 0 {
+			continue
+		}
+		s = []byte(strings.Replace(string(s), k, v.Replacement, -1))
+		v.ReplaceCount++
+		v.Count--
+		e.m[k] = v
+	}
+	return os.WriteFile(fileOut, s, 0644)
 }
