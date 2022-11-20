@@ -51,7 +51,8 @@ func TestFindAll(t *testing.T) {
 
 	// Check for ${WITH2} replaced
 	r, _ = FindAll(fileOut)
-	if len(r) != 2 {
-		t.Error("Should be 2")
+	if r[0] != "{WITH1}" && r[1] != "{WITH1}" && len(r) != 2 {
+		t.Error("Should be {WITH1} and {WITH1}")
 	}
+
 }

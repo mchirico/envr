@@ -13,21 +13,32 @@ import (
 // swapallCmd represents the swapall command
 var swapallCmd = &cobra.Command{
 	Use:   "swapall",
-	Short: "looks at file.yaml and swaps all {{VARS}} if found in ${VARS}",
+	Short: "looks at file.yaml and swaps all {VARS} if environment ${VARS} exists",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			fmt.Println("No arguments")
-			fmt.Println("envr  swapall ./filename.yaml")
+		if len(args) != 2 {
+			fmt.Println(`
+
+			Usage: envr swapall ./fileTemplate.yaml ./target.yaml
+
+            Where fileTemplate.yaml has {ENVARS} and target.yaml gets results
+`)
+
 			return
 		}
-		out, err := util.GetAWS()
+
+		r, err := util.FindAll(args[0])
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
-		s, err := util.ReadReplace(args[0], out)
-		fmt.Print(s)
+
+		e := util.NewEnv(r)
+		err = e.Replace(args[0], args[1])
+		if err != nil {
+			fmt.Println(err)
+		}
+
 	},
 }
 
